@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <link rel='stylesheet' href='popup.css'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.css'>
+        <link id='js__theme-css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/theme/mdn-like.min.css'>
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/addon/scroll/simplescrollbars.min.css'>
+    </head>
+    <body>
+        <fieldset class='set set--settings'>
+            <legend class='set__legend'>Settings</legend>
+            <div class='antibug'>
+                <div class='font'>
+                    <button class='font-button font-button--inc' id='js__increase' title='increase font'></button>
+                    <button class='font-button font-button--dec' id='js__decrease' title='decrease font'></button>
+                    <span class='font-text'>Aa</span>
+                </div>
+                <select class='theme' id='js__theme'>
+                    <option>3024-day</option>
+                    <option>3024-night</option>
+                    <option>abcdef</option>
+                    <option>ambiance</option>
+                    <option>base16-dark</option>
+                    <option>base16-light</option>
+                    <option>bespin</option>
+                    <option>blackboard</option>
+                    <option>cobalt</option>
+                    <option>colorforth</option>
+                    <option>darcula</option>
+                    <option>dracula</option>
+                    <option>duotone-dark</option>
+                    <option>duotone-light</option>
+                    <option>eclipse</option>
+                    <option>elegant</option>
+                    <option>erlang-dark</option>
+                    <option>gruvbox-dark</option>
+                    <option>hopscotch</option>
+                    <option>icecoder</option>
+                    <option>idea</option>
+                    <option>isotope</option>
+                    <option>lesser-dark</option>
+                    <option>liquibyte</option>
+                    <option>lucario</option>
+                    <option>material</option>
+                    <option>mbo</option>
+                    <option>mdn-like</option>
+                    <option>midnight</option>
+                    <option>monokai</option>
+                    <option>neat</option>
+                    <option>neo</option>
+                    <option>night</option>
+                    <option>nord</option>
+                    <option>oceanic-next</option>
+                    <option>panda-syntax</option>
+                    <option>paraiso-dark</option>
+                    <option>paraiso-light</option>
+                    <option>pastel-on-dark</option>
+                    <option>railscasts</option>
+                    <option>rubyblue</option>
+                    <option>seti</option>
+                    <option>shadowfox</option>
+                    <option>solarized dark</option>
+                    <option>solarized light</option>
+                    <option>the-matrix</option>
+                    <option>tomorrow-night-bright</option>
+                    <option>tomorrow-night-eighties</option>
+                    <option>ttcn</option>
+                    <option>twilight</option>
+                    <option>vibrant-ink</option>
+                    <option>xq-dark</option>
+                    <option>xq-light</option>
+                    <option>yeti</option>
+                    <option>yonce</option>
+                    <option>zenburn</option>
+                </select>
+            </div>
+        </fieldset>
+        <fieldset class='set set--main' id='js__main'>
+            <legend class='set__legend'>Your code</legend>
+            <div class='user-code' id='js__user-code'></div>
+        </fieldset>
+        <fieldset class='set set--url'>
+            <legend class='set__legend'>URL</legend>
+            <input class='url-field' id='js__url' type='edit'>
+        </fieldset>
+        <button class='set set--save' id='js__save'>Save</button>
+    </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/mode/javascript/javascript.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/addon/scroll/simplescrollbars.min.js'></script>
+    <script src='popup.js'></script>
+</html>
