@@ -110,21 +110,24 @@ body { /* body height and width are set by JS */
     vertical-align: text-top;
     width: 60px;
 }
-.theme {
+.select-elem {
     border: 1px solid black;
     height: 20px;
     margin-left: 10px;
     outline: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-right: 20px;
-    width: 170px;
+    width: auto;
 }
-.theme:hover {
+.select-elem:hover {
     border-color: rgb(0, 191, 255);
 }
-.theme:active {
+.select-elem:active {
     border-color:black;
+}
+.select-elem--theme {
+    width: 170px;
+}
+.select-elem--run-at {
+    width: 70px;
 }
 .save {
     display: inline-block;

@@ -1,14 +1,22 @@
+var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
+
 var externalTheme = document.getElementById('js__theme-css');
 var decreaseFont = document.getElementById('js__decrease');
 var increaseFont = document.getElementById('js__increase');
+var runAt = document.getElementById('js__run-at');
 var saveButton = document.getElementById('js__save');
 var themeSelector = document.getElementById('js__theme');
 var urlField = document.getElementById('js__url');
 var userCode = document.getElementById("js__user-code");
 
 var codeMirror;
-var startTheme = 'mdn-like';
-var themePattern = /[a-z0-9\-]+(?=\.min\.css$)/;
+var config = {
+    'code': '',
+    'editorTheme': '',
+    'fontSize': '',
+    'runAt': ''
+};
+
 
 CodeMirror.commands.save = function(){
     saveButton.click();
@@ -27,24 +35,21 @@ chrome.tabs.query(
         var sizes = getPopupSize(tab.height, tab.width);
         document.body.style.height = sizes.height + 'px';
         document.body.style.width = sizes.width + 'px';
-        // set font size
-        userCode.style.fontSize = '12px';
-        // set start theme
-        themeSelector.value = startTheme;
         // check/insert current user script
         chrome.storage.sync.get(null, function(data){
-            var code = "";
-            if(data[tab.url]){
-                code = data[tab.url];
-            }
+            initializeConfig(config, data[tab.url]);
             codeMirror = CodeMirror(userCode, {
                 lineNumbers: true,
                 mode: 'javascript',
                 scrollbarStyle: 'simple',
-                theme: startTheme,
-                value: code
+                value: config.code
             });
             codeMirror.setSize('100%', '100%');
+            // set settings
+            userCode.style.fontSize = config.fontSize;
+            themeSelector.value = config.editorTheme;
+            updateEditorTheme.call({ value: config.editorTheme });
+            runAt.value = config.runAt;
         });
     }
 );
@@ -53,24 +58,28 @@ decreaseFont.addEventListener('click', function(ev){
     var wish = parseInt(userCode.style.fontSize) - 1;
     userCode.style.fontSize = ((wish !== wish || wish < 6) ? 6 : wish) + 'px';
     codeMirror.refresh();
+    // update config
+    config.fontSize = userCode.style.fontSize;
 });
 increaseFont.addEventListener('click', function(ev){
     var wish = parseInt(userCode.style.fontSize) + 1;
     userCode.style.fontSize = ((wish > 40) ? 40 : wish) + 'px';
     codeMirror.refresh();
+    // update config
+    config.fontSize = userCode.style.fontSize;
 });
+runAt.addEventListener('change', function(ev){
+    config.runAt = this.value;
+})
 saveButton.addEventListener('click', function(ev){
+    config.code = codeMirror.getValue();
     chrome.storage.sync.set({
-        [urlField.value]: codeMirror.getValue()
+        [urlField.value]: config
     });
 });
-themeSelector.addEventListener('change', function(ev){
-    externalTheme.href = externalTheme.href.replace(themePattern, this.value.replace(/([a-z0-9-]+) .*/, "$1"));
-    codeMirror.setOption("theme", this.value);
-});
+themeSelector.addEventListener('change', updateEditorTheme);
 
 function getPopupSize(height, width){
-    console.log(height, width);
     var MAX_H = 600;
     var MAX_W = 800;
     var MIN_H = 300;
@@ -83,7 +92,21 @@ function getPopupSize(height, width){
         width:  (calcW > MAX_W) ? MAX_W :
                 (calcW > MIN_W) ? calcW : MIN_W
     };
-
+}
+function initializeConfig(state, params){
+    if(!params){
+        params = {};
+    }
+    state.code = params.code || '';
+    state.fontSize = params.fontSize || '12px';
+    state.editorTheme = params.editorTheme || 'mdn-like';
+    state.runAt = params.runAt || 'document_idle';
+}
+function updateEditorTheme(ev){
+    externalTheme.href = externalTheme.href.replace(THEME_PATTERN, this.value.replace(/([a-z0-9-]+) .*/, "$1"));
+    codeMirror.setOption("theme", this.value);
+    // update config
+    config.editorTheme = this.value;
 }
 
 /*chrome.storage.sync.get(null, function(data){

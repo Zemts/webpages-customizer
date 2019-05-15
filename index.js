@@ -3,6 +3,24 @@ var CONTEXT_MENU_FIELDS = {
     "title": "Add scripts",
     "contexts": ["all"]
 }
+// current storage
+var syncStorage = {};
+// storage handlers and listeners
+chrome.storage.sync.get(null, function(data){
+    syncStorage = data;
+});
+chrome.storage.onChanged.addListener(function(changes, areaName){
+    if(areaName === 'sync'){
+        for(var key in changes){
+            if(!changes.hasOwnProperty(key)){
+                continue;
+            }
+            if(syncStorage[key]){
+                syncStorage[key] = changes[key].newValue;
+            }
+        }
+    }
+});
 // initialization
 chrome.runtime.onInstalled.addListener(function(){
     chrome.contextMenus.create(CONTEXT_MENU_FIELDS);
@@ -32,17 +50,13 @@ chrome.contextMenus.onClicked.addListener(function(itemData){
         alert("Place for opening app(extension) for adding scripts");
     }
 });
+
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab){
-    if(changeInfo.status === 'complete'){
-        chrome.storage.sync.get(null, function(data){
-            if(data[tab.url] !== undefined){
-                chrome.tabs.executeScript(tabID, {
-                    code: data[tab.url]
-                }, function(){
-                    //alert('executing...');
-                });
-            }
-        })
+    if(changeInfo.status === 'loading' && syncStorage[tab.url]){
+        chrome.tabs.executeScript(tabID, {
+            code: syncStorage[tab.url].code,
+            runAt: syncStorage[tab.url].runAt
+        });
     }
 });
 /*
