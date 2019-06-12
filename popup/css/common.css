@@ -1,0 +1,100 @@
+/*
+*   COMMON
+*/
+* {
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+}
+*[hidden] {
+    display: none !important;
+}
+body { /* body height and width are set by JS */
+    align-content: stretch;
+    align-items: stretch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+/*
+*   'SET' and childs
+*/
+.set {
+    border: 2px solid black;
+    /*border-radius: 5px;*/
+    display: flex;
+    justify-content: flex-start;
+    max-width: 100%;
+    min-width: 100%;
+    padding: 0 10px 30px 10px;
+    position: relative;
+}
+.set:focus-within,
+.set:focus-within .set_legend {
+    border-color: rgb(0, 191, 255);
+    color: rgb(0, 191, 255);
+}
+.set_legend {
+    cursor: default;
+    font-size: 20px;
+    font-weight: 800;
+    left: 10px;
+    padding: 0 10px;
+}
+.set_bugfix { /* plain container to fix "fieldset + flex" bug */
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    height: 100%;
+    width: 100%;
+}
+
+/*
+*   'SET' modifiers
+*/
+.set--settings {
+    max-height: 60px;
+    min-height: 60px;
+    z-index: 10;
+}
+.set--main {
+    align-self: stretch;
+    max-height: calc(100% - 110px); /* 110px is approximate sum of header and footer */
+    min-height: calc(100% - 110px);
+}
+.set--url {
+    display: inline-block;
+    max-height: 50px;
+    max-width: calc(100% - 100px);
+    min-height: 50px;
+    min-width: calc(100% - 100px);
+}
+.set--save {
+    background-color: transparent;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 36px;
+    margin-left: auto;
+    margin-top: 10px;
+    max-height: 40px;
+    max-width: 90px;
+    min-height: 40px;
+    min-width: 90px;
+    outline: none;
+}
+.set--save:hover {
+    border-color: rgb(0, 191, 255);
+    color: rgb(0, 191, 255);
+}
+.set--save:active {
+    background-color: rgb(0, 191, 255);
+    border-color: rgb(0, 191, 255);
+    color: black;
+}

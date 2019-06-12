@@ -1,20 +1,42 @@
+//1. надо допилить селекторы (над сделать так, чтоб полоса прокрутки (та что вертикальная) не залезала на кнопку расширения)
+//  как вариант (ПРЕДПОЛОЖИТЕЛЬНО !!!) нужно будет изменить позиционирование .list-items - вхуярить ему margin, и соответствующе воткнуть смещения
+//  тогда может быть все будет хорошо
+//  еще над модифицировать анимацию, чтоб margin грамотно появлялся (он ща периодичкски залезает на кнопку расширения) или как вариант над сделать, так чтоб полоса прокрутки вылезала позже
+//  время анимации вроде 250мс возможно это же значение можно в качестве задержки юзать (но над посмотреть)
+//2. добавить описание настройкам (выбору темы, этапу выполнения)
+//3. сделать блок URL двустрочным, где в первой строке - текущий рабочий URL, а во второй - подходящие url'ны
+
+function setRadioInFormByValue(form, value){
+    Array.prototype.forEach.call(form.getElementsByTagName('input'), function(item){
+        if(item.value === value){
+            item.checked = true;
+        }
+    });
+}
+function getValueFromForm(form){
+    var checked = Array.prototype.filter.call(form.getElementsByTagName('input'), function(item){
+        return item.checked;
+    })[0];
+    return checked && checked.value;
+}
+
 var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
 
-var externalTheme = document.getElementById('js__theme-css');
-var decreaseFont = document.getElementById('js__decrease');
-var increaseFont = document.getElementById('js__increase');
-var runAt = document.getElementById('js__run-at');
-var saveButton = document.getElementById('js__save');
-var themeSelector = document.getElementById('js__theme');
-var urlField = document.getElementById('js__url');
-var userCode = document.getElementById("js__user-code");
+var externalTheme = document.getElementById('js_theme-css');
+var decreaseFont = document.getElementById('js_decrease');
+var increaseFont = document.getElementById('js_increase');
+var runAt = document.getElementById('js_run-at');
+var saveButton = document.getElementById('js_save');
+var themeSelector = document.getElementById('js_theme');
+var urlField = document.getElementById('js_url-path');
+var userCode = document.getElementById("js_user-code");
 
 var codeMirror;
-var config = {
+var config = { // + default values
     'code': '',
-    'editorTheme': '',
-    'fontSize': '',
-    'runAt': ''
+    'editorTheme': 'mdn-like',
+    'fontSize': '12px',
+    'runAt': 'document_idle'
 };
 
 
@@ -49,7 +71,7 @@ chrome.tabs.query(
             userCode.style.fontSize = config.fontSize;
             themeSelector.value = config.editorTheme;
             updateEditorTheme.call({ value: config.editorTheme });
-            runAt.value = config.runAt;
+            setRadioInFormByValue(runAt, config.runAt);
         });
     }
 );
@@ -58,23 +80,24 @@ decreaseFont.addEventListener('click', function(ev){
     var wish = parseInt(userCode.style.fontSize) - 1;
     userCode.style.fontSize = ((wish !== wish || wish < 6) ? 6 : wish) + 'px';
     codeMirror.refresh();
-    // update config
-    config.fontSize = userCode.style.fontSize;
+    config.fontSize = userCode.style.fontSize; // update config state
 });
 increaseFont.addEventListener('click', function(ev){
     var wish = parseInt(userCode.style.fontSize) + 1;
     userCode.style.fontSize = ((wish > 40) ? 40 : wish) + 'px';
     codeMirror.refresh();
-    // update config
-    config.fontSize = userCode.style.fontSize;
+    config.fontSize = userCode.style.fontSize; // update config state
 });
 runAt.addEventListener('change', function(ev){
-    config.runAt = this.value;
-})
+    var value = getValueFromForm(this);
+    if(value){
+        config.runAt = value;
+    }
+});
 saveButton.addEventListener('click', function(ev){
     config.code = codeMirror.getValue();
     chrome.storage.sync.set({
-        [urlField.value]: config
+        [urlField.value]: config // save config state
     });
 });
 themeSelector.addEventListener('change', updateEditorTheme);
@@ -97,10 +120,10 @@ function initializeConfig(state, params){
     if(!params){
         params = {};
     }
-    state.code = params.code || '';
-    state.fontSize = params.fontSize || '12px';
-    state.editorTheme = params.editorTheme || 'mdn-like';
-    state.runAt = params.runAt || 'document_idle';
+    state.code = params.code || state.code;
+    state.fontSize = params.fontSize || state.fontSize;
+    state.editorTheme = params.editorTheme || state.editorTheme;
+    state.runAt = params.runAt || state.runAt;
 }
 function updateEditorTheme(ev){
     externalTheme.href = externalTheme.href.replace(THEME_PATTERN, this.value.replace(/([a-z0-9-]+) .*/, "$1"));

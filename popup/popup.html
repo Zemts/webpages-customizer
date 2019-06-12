@@ -2,94 +2,294 @@
 <html>
     <head>
         <meta charset='utf-8'>
-        <link rel='stylesheet' href='popup.css'>
+        <link rel='stylesheet' href='css/common.css'>
+        <link rel='stylesheet' href='css/settings.css'>
+        <link rel='stylesheet' href='css/code.css'>
+        <link rel='stylesheet' href='css/url.css'>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.css'>
-        <link id='js__theme-css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/theme/mdn-like.min.css'>
+        <link id='js_theme-css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/theme/mdn-like.min.css'>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/addon/scroll/simplescrollbars.min.css'>
     </head>
     <body>
         <fieldset class='set set--settings'>
-            <legend class='set__legend'>Settings</legend>
-            <div class='antibug'>
+            <legend class='set_legend'>Settings</legend>
+            <div class='set_bugfix'>
                 <div class='font'>
-                    <button class='font-button font-button--inc' id='js__increase' title='increase font'></button>
-                    <button class='font-button font-button--dec' id='js__decrease' title='decrease font'></button>
-                    <span class='font-text'>Aa</span>
+                    <button class='font-button' id='js_increase' title='increase font'>&lt;</button>
+                    <button class='font-button' id='js_decrease' title='decrease font'>&gt;</button>
+                    <span class='font-text'>Aa:</span>
                 </div>
-                <select class='select-elem select-elem--theme' id='js__theme'>
-                    <option>3024-day</option>
-                    <option>3024-night</option>
-                    <option>abcdef</option>
-                    <option>ambiance</option>
-                    <option>base16-dark</option>
-                    <option>base16-light</option>
-                    <option>bespin</option>
-                    <option>blackboard</option>
-                    <option>cobalt</option>
-                    <option>colorforth</option>
-                    <option>darcula</option>
-                    <option>dracula</option>
-                    <option>duotone-dark</option>
-                    <option>duotone-light</option>
-                    <option>eclipse</option>
-                    <option>elegant</option>
-                    <option>erlang-dark</option>
-                    <option>gruvbox-dark</option>
-                    <option>hopscotch</option>
-                    <option>icecoder</option>
-                    <option>idea</option>
-                    <option>isotope</option>
-                    <option>lesser-dark</option>
-                    <option>liquibyte</option>
-                    <option>lucario</option>
-                    <option>material</option>
-                    <option>mbo</option>
-                    <option>mdn-like</option>
-                    <option>midnight</option>
-                    <option>monokai</option>
-                    <option>neat</option>
-                    <option>neo</option>
-                    <option>night</option>
-                    <option>nord</option>
-                    <option>oceanic-next</option>
-                    <option>panda-syntax</option>
-                    <option>paraiso-dark</option>
-                    <option>paraiso-light</option>
-                    <option>pastel-on-dark</option>
-                    <option>railscasts</option>
-                    <option>rubyblue</option>
-                    <option>seti</option>
-                    <option>shadowfox</option>
-                    <option>solarized dark</option>
-                    <option>solarized light</option>
-                    <option>the-matrix</option>
-                    <option>tomorrow-night-bright</option>
-                    <option>tomorrow-night-eighties</option>
-                    <option>ttcn</option>
-                    <option>twilight</option>
-                    <option>vibrant-ink</option>
-                    <option>xq-dark</option>
-                    <option>xq-light</option>
-                    <option>yeti</option>
-                    <option>yonce</option>
-                    <option>zenburn</option>
-                </select>
-                <select class='select-elem select-elem--run-at' id='js__run-at'>
-                    <option value='document_start'>start</option>
-                    <option value='document_end'>end</option>
-                    <option value='document_idle'>idle</option>
-                </select>
+                <form class='list' id='js_theme'>
+                    <div class='list_placeholder'>Editor theme</div>
+                    <input class='list_expand-flag' type='radio' name='editor-theme' id='editor-theme_expand' value='' hidden>
+                    <label class='list_expand-label' for='editor-theme_expand'>></label>
+                    <ul class='list_items'>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='3024-day' value='3024-day' hidden>
+                            <label class='list_label' title='3024-day' for='3024-day'>3024-day</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='3024-night' value='3024-night' hidden>
+                            <label class='list_label' title='3024-night' for='3024-night'>3024-night</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='abcdef' value='abcdef' hidden>
+                            <label class='list_label' title='abcdef' for='abcdef'>abcdef</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='ambiance' value='ambiance' hidden>
+                            <label class='list_label' title='ambiance' for='ambiance'>ambiance</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='base16-dark' value='base16-dark' hidden>
+                            <label class='list_label' title='base16-dark' for='base16-dark'>base16-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='base16-light' value='base16-light' hidden>
+                            <label class='list_label' title='base16-light' for='base16-light'>base16-light</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='bespin' value='bespin' hidden>
+                            <label class='list_label' title='bespin' for='bespin'>bespin</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='blackboard' value='blackboard' hidden>
+                            <label class='list_label' title='blackboard' for='blackboard'>blackboard</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='cobalt' value='cobalt' hidden>
+                            <label class='list_label' title='cobalt' for='cobalt'>cobalt</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='colorforth' value='colorforth' hidden>
+                            <label class='list_label' title='colorforth' for='colorforth'>colorforth</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='darcula' value='darcula' hidden>
+                            <label class='list_label' title='darcula' for='darcula'>darcula</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='dracula' value='dracula' hidden>
+                            <label class='list_label' title='dracula' for='dracula'>dracula</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='duotone-dark' value='duotone-dark' hidden>
+                            <label class='list_label' title='duotone-dark' for='duotone-dark'>duotone-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='duotone-light' value='duotone-light' hidden>
+                            <label class='list_label' title='duotone-light' for='duotone-light'>duotone-light</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='eclipse' value='eclipse' hidden>
+                            <label class='list_label' title='eclipse' for='eclipse'>eclipse</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='elegant' value='elegant' hidden>
+                            <label class='list_label' title='elegant' for='elegant'>elegant</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='erlang-dark' value='erlang-dark' hidden>
+                            <label class='list_label' title='erlang-dark' for='erlang-dark'>erlang-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='gruvbox-dark' value='gruvbox-dark' hidden>
+                            <label class='list_label' title='gruvbox-dark' for='gruvbox-dark'>gruvbox-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='hopscotch' value='hopscotch' hidden>
+                            <label class='list_label' title='hopscotch' for='hopscotch'>hopscotch</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='icecoder' value='icecoder' hidden>
+                            <label class='list_label' title='icecoder' for='icecoder'>icecoder</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='idea' value='idea' hidden>
+                            <label class='list_label' title='idea' for='idea'>idea</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='isotope' value='isotope' hidden>
+                            <label class='list_label' title='isotope' for='isotope'>isotope</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='lesser-dark' value='lesser-dark' hidden>
+                            <label class='list_label' title='lesser-dark' for='lesser-dark'>lesser-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='liquibyte' value='liquibyte' hidden>
+                            <label class='list_label' title='liquibyte' for='liquibyte'>liquibyte</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='lucario' value='lucario' hidden>
+                            <label class='list_label' title='lucario' for='lucario'>lucario</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='material' value='material' hidden>
+                            <label class='list_label' title='material' for='material'>material</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='mbo' value='mbo' hidden>
+                            <label class='list_label' title='mbo' for='mbo'>mbo</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='mdn-like' value='mdn-like' hidden>
+                            <label class='list_label' title='mdn-like' for='mdn-like'>mdn-like</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='midnight' value='midnight' hidden>
+                            <label class='list_label' title='midnight' for='midnight'>midnight</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='monokai' value='monokai' hidden>
+                            <label class='list_label' title='monokai' for='monokai'>monokai</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='neat' value='neat' hidden>
+                            <label class='list_label' title='neat' for='neat'>neat</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='neo' value='neo' hidden>
+                            <label class='list_label' title='neo' for='neo'>neo</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='night' value='night' hidden>
+                            <label class='list_label' title='night' for='night'>night</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='nord' value='nord' hidden>
+                            <label class='list_label' title='nord' for='nord'>nord</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='oceanic-next' value='oceanic-next' hidden>
+                            <label class='list_label' title='oceanic-next' for='oceanic-next'>oceanic-next</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='panda-syntax' value='panda-syntax' hidden>
+                            <label class='list_label' title='panda-syntax' for='panda-syntax'>panda-syntax</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='paraiso-dark' value='paraiso-dark' hidden>
+                            <label class='list_label' title='paraiso-dark' for='paraiso-dark'>paraiso-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='paraiso-light' value='paraiso-light' hidden>
+                            <label class='list_label' title='paraiso-light' for='paraiso-light'>paraiso-light</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='pastel-on-dark' value='pastel-on-dark' hidden>
+                            <label class='list_label' title='pastel-on-dark' for='pastel-on-dark'>pastel-on-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='railscasts' value='railscasts' hidden>
+                            <label class='list_label' title='railscasts' for='railscasts'>railscasts</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='rubyblue' value='rubyblue' hidden>
+                            <label class='list_label' title='rubyblue' for='rubyblue'>rubyblue</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='seti' value='seti' hidden>
+                            <label class='list_label' title='seti' for='seti'>seti</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='shadowfox' value='shadowfox' hidden>
+                            <label class='list_label' title='shadowfox' for='shadowfox'>shadowfox</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='solarized-dark' value='solarized dark' hidden> <!-- with whitespace !!! -->
+                            <label class='list_label' title='solarized dark' for='solarized-dark'>solarized dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='solarized-light' value='solarized light' hidden> <!-- with whitespace !!! -->
+                            <label class='list_label' title='solarized light' for='solarized-light'>solarized light</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='the-matrix' value='the-matrix' hidden>
+                            <label class='list_label' title='the-matrix' for='the-matrix'>the-matrix</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='tomorrow-night-bright' value='tomorrow-night-bright' hidden>
+                            <label class='list_label' title='tomorrow-night-bright' for='tomorrow-night-bright'>tomorrow-night-bright</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='tomorrow-night-eighties' value='tomorrow-night-eighties' hidden>
+                            <label class='list_label' title='tomorrow-night-eighties' for='tomorrow-night-eighties'>tomorrow-night-eighties</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='ttcn' value='ttcn' hidden>
+                            <label class='list_label' title='ttcn' for='ttcn'>ttcn</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='twilight' value='twilight' hidden>
+                            <label class='list_label' title='twilight' for='twilight'>twilight</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='vibrant-ink' value='vibrant-ink' hidden>
+                            <label class='list_label' title='vibrant-ink' for='vibrant-ink'>vibrant-ink</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='xq-dark' value='xq-dark' hidden>
+                            <label class='list_label' title='xq-dark' for='xq-dark'>xq-dark</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='xq-light' value='xq-light' hidden>
+                            <label class='list_label' title='xq-light' for='xq-light'>xq-light</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='yeti' value='yeti' hidden>
+                            <label class='list_label' title='yeti' for='yeti'>yeti</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='yonce' value='yonce' hidden>
+                            <label class='list_label' title='yonce' for='yonce'>yonce</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='editor-theme' id='zenburn' value='zenburn' hidden>
+                            <label class='list_label' title='zenburn' for='zenburn'>zenburn</label>
+                        </li>
+                    </ul>
+                </form>
+                <form class='list' id='js_run-at'>
+                    <div class='list_placeholder'>Run at</div>
+                    <input class='list_expand-flag' type='radio' name='run-at' id='run-at_expand' value='' hidden>
+                    <label class='list_expand-label' for='run-at_expand'>></label>
+                    <ul class='list_items'>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='run-at' id='run-at_start' value='document_start' hidden>
+                            <label class='list_label' title='document_start' for='run-at_start'>document_start</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='run-at' id='run-at_end' value='document_end' hidden>
+                            <label class='list_label' title='document_end' for='run-at_end'>document_end</label>
+                        </li>
+                        <li class='list_item'>
+                            <input class='list_input' type='radio' name='run-at' id='run-at_idle' value='document_idle' hidden>
+                            <label class='list_label' title='document_idle' for='run-at_idle'>document_idle</label>
+                        </li>
+                        <label class='list_clicker' for='run-at_expand'></label>
+                    </ul>
+                </form>
             </div>
         </fieldset>
-        <fieldset class='set set--main' id='js__main'>
-            <legend class='set__legend'>Your code</legend>
-            <div class='user-code' id='js__user-code'></div>
+        <fieldset class='set set--main' id='js_main'>
+            <legend class='set_legend'>Code</legend>
+            <div class='user-code' id='js_user-code'></div>
         </fieldset>
         <fieldset class='set set--url'>
-            <legend class='set__legend'>URL</legend>
-            <input class='url-field' id='js__url' type='edit'>
+            <legend class='set_legend'>URL</legend>
+            <div class='set_bugfix'>
+                <label class='url-path'>
+                    <span class='url-path_text'>Current:</span>
+                    <input class='url-path_input' id='js_url-path' type='edit'>
+                </label>
+                <label class='url-path'>
+                    <span class='url-path_text'>Triggered:</span>
+                    <select class='url-path_select' id='js_url-triggered'></select>
+                </label>
+            </div>
         </fieldset>
-        <button class='set set--save' id='js__save'>Save</button>
+        <button class='set set--save' id='js_save'>Save</button>
     </body>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/codemirror.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.46.0/mode/javascript/javascript.min.js'></script>

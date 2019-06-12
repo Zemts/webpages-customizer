@@ -1,0 +1,7 @@
+.user-code { /* set font-size via JS for using up/down font buttons */
+    display: block;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+    width: 100%;
+}
