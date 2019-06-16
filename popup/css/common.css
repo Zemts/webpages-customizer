@@ -61,6 +61,7 @@ body { /* body height and width are set by JS */
 .set--settings {
     max-height: 60px;
     min-height: 60px;
+    padding-top: 10px;
     z-index: 10;
 }
 .set--main {

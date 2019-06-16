@@ -1,24 +1,7 @@
-//1. надо допилить селекторы (над сделать так, чтоб полоса прокрутки (та что вертикальная) не залезала на кнопку расширения)
-//  как вариант (ПРЕДПОЛОЖИТЕЛЬНО !!!) нужно будет изменить позиционирование .list-items - вхуярить ему margin, и соответствующе воткнуть смещения
-//  тогда может быть все будет хорошо
-//  еще над модифицировать анимацию, чтоб margin грамотно появлялся (он ща периодичкски залезает на кнопку расширения) или как вариант над сделать, так чтоб полоса прокрутки вылезала позже
-//  время анимации вроде 250мс возможно это же значение можно в качестве задержки юзать (но над посмотреть)
+//1. подумать - можно ли избавиться от резкого -margin (выглядит не плавно)
+// * возможно нужно более плавное изменение (что-то типо список наезжает на селект -> список плавно уходит в фон (меняя z-index))
 //2. добавить описание настройкам (выбору темы, этапу выполнения)
 //3. сделать блок URL двустрочным, где в первой строке - текущий рабочий URL, а во второй - подходящие url'ны
-
-function setRadioInFormByValue(form, value){
-    Array.prototype.forEach.call(form.getElementsByTagName('input'), function(item){
-        if(item.value === value){
-            item.checked = true;
-        }
-    });
-}
-function getValueFromForm(form){
-    var checked = Array.prototype.filter.call(form.getElementsByTagName('input'), function(item){
-        return item.checked;
-    })[0];
-    return checked && checked.value;
-}
 
 var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
 
@@ -27,7 +10,7 @@ var decreaseFont = document.getElementById('js_decrease');
 var increaseFont = document.getElementById('js_increase');
 var runAt = document.getElementById('js_run-at');
 var saveButton = document.getElementById('js_save');
-var themeSelector = document.getElementById('js_theme');
+var editorTheme = document.getElementById('js_theme');
 var urlField = document.getElementById('js_url-path');
 var userCode = document.getElementById("js_user-code");
 
@@ -64,13 +47,13 @@ chrome.tabs.query(
                 lineNumbers: true,
                 mode: 'javascript',
                 scrollbarStyle: 'simple',
+                theme: config.editorTheme,
                 value: config.code
             });
             codeMirror.setSize('100%', '100%');
             // set settings
             userCode.style.fontSize = config.fontSize;
-            themeSelector.value = config.editorTheme;
-            updateEditorTheme.call({ value: config.editorTheme });
+            setRadioInFormByValue(editorTheme, config.editorTheme);
             setRadioInFormByValue(runAt, config.runAt);
         });
     }
@@ -81,6 +64,14 @@ decreaseFont.addEventListener('click', function(ev){
     userCode.style.fontSize = ((wish !== wish || wish < 6) ? 6 : wish) + 'px';
     codeMirror.refresh();
     config.fontSize = userCode.style.fontSize; // update config state
+});
+editorTheme.addEventListener('change', function(ev){
+    var value = getValueFromForm(this);
+    if(value){
+        externalTheme.href = externalTheme.href.replace(THEME_PATTERN, value.replace(/([a-z0-9-]+) .*/, "$1"));
+        config.editorTheme = value;
+        codeMirror.setOption("theme", value);
+    }
 });
 increaseFont.addEventListener('click', function(ev){
     var wish = parseInt(userCode.style.fontSize) + 1;
@@ -100,7 +91,7 @@ saveButton.addEventListener('click', function(ev){
         [urlField.value]: config // save config state
     });
 });
-themeSelector.addEventListener('change', updateEditorTheme);
+
 
 function getPopupSize(height, width){
     var MAX_H = 600;
@@ -116,6 +107,12 @@ function getPopupSize(height, width){
                 (calcW > MIN_W) ? calcW : MIN_W
     };
 }
+function getValueFromForm(form){
+    var checked = Array.prototype.filter.call(form.getElementsByTagName('input'), function(item){
+        return item.checked;
+    })[0];
+    return checked && checked.value;
+}
 function initializeConfig(state, params){
     if(!params){
         params = {};
@@ -125,11 +122,13 @@ function initializeConfig(state, params){
     state.editorTheme = params.editorTheme || state.editorTheme;
     state.runAt = params.runAt || state.runAt;
 }
-function updateEditorTheme(ev){
-    externalTheme.href = externalTheme.href.replace(THEME_PATTERN, this.value.replace(/([a-z0-9-]+) .*/, "$1"));
-    codeMirror.setOption("theme", this.value);
-    // update config
-    config.editorTheme = this.value;
+function setRadioInFormByValue(form, value){
+    Array.prototype.forEach.call(form.getElementsByTagName('input'), function(item){
+        if(item.value === value){
+            //item.checked = true; // this call doesn't spawn 'change' event
+            item.click(); // this call spawns 'change' event in form
+        }
+    });
 }
 
 /*chrome.storage.sync.get(null, function(data){

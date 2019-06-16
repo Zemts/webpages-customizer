@@ -20,9 +20,10 @@
                     <span class='font-text'>Aa:</span>
                 </div>
                 <form class='list' id='js_theme'>
-                    <div class='list_placeholder'>Editor theme</div>
                     <input class='list_expand-flag' type='radio' name='editor-theme' id='editor-theme_expand' value='' hidden>
-                    <label class='list_expand-label' for='editor-theme_expand'>></label>
+                    <label class='list_clicker' for='editor-theme_expand' title='Set editor theme'></label>
+                    <label class='list_expand-label' for='editor-theme_expand'>&gt;</label>
+                    <div class='list_placeholder'>Set editor theme</div>
                     <ul class='list_items'>
                         <li class='list_item'>
                             <input class='list_input' type='radio' name='editor-theme' id='3024-day' value='3024-day' hidden>
@@ -251,24 +252,25 @@
                     </ul>
                 </form>
                 <form class='list' id='js_run-at'>
-                    <div class='list_placeholder'>Run at</div>
                     <input class='list_expand-flag' type='radio' name='run-at' id='run-at_expand' value='' hidden>
-                    <label class='list_expand-label' for='run-at_expand'>></label>
+                    <label class='list_clicker' for='run-at_expand' title='Set stage of code execution'></label>
+                    <label class='list_expand-label' for='run-at_expand'>&gt;</label>
+                    <div class='list_placeholder'>Run at</div>
                     <ul class='list_items'>
                         <li class='list_item'>
                             <input class='list_input' type='radio' name='run-at' id='run-at_start' value='document_start' hidden>
-                            <label class='list_label' title='document_start' for='run-at_start'>document_start</label>
+                            <label class='list_label' title='document_start' for='run-at_start'>start</label>
                         </li>
                         <li class='list_item'>
                             <input class='list_input' type='radio' name='run-at' id='run-at_end' value='document_end' hidden>
-                            <label class='list_label' title='document_end' for='run-at_end'>document_end</label>
+                            <label class='list_label' title='document_end' for='run-at_end'>end</label>
                         </li>
                         <li class='list_item'>
                             <input class='list_input' type='radio' name='run-at' id='run-at_idle' value='document_idle' hidden>
-                            <label class='list_label' title='document_idle' for='run-at_idle'>document_idle</label>
+                            <label class='list_label' title='document_idle' for='run-at_idle'>idle</label>
                         </li>
-                        <label class='list_clicker' for='run-at_expand'></label>
                     </ul>
+
                 </form>
             </div>
         </fieldset>
