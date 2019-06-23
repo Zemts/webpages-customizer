@@ -2,7 +2,9 @@ var CONTEXT_MENU_FIELDS = {
     "id": "addScripts",
     "title": "Add scripts",
     "contexts": ["all"]
-}
+};
+var URL_STUB = document.createElement('a');
+
 // current storage
 var syncStorage = {};
 // storage handlers and listeners
@@ -52,11 +54,20 @@ chrome.contextMenus.onClicked.addListener(function(itemData){
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab){
-    if(changeInfo.status === 'loading' && syncStorage[tab.url]){
-        chrome.tabs.executeScript(tabID, {
-            code: syncStorage[tab.url].code,
-            runAt: syncStorage[tab.url].runAt
-        });
+    if(changeInfo.status === 'loading'){ // doesn't use URL with another lifecycle stages of tabs
+        URL_STUB.href = tab.url;
+        if(syncStorage[URL_STUB.origin]){
+            chrome.tabs.executeScript(tabID, {
+                code: syncStorage[URL_STUB.origin].code,
+                runAt: syncStorage[URL_STUB.origin].runAt
+            });
+        }
+        if(syncStorage[tab.url]){
+            chrome.tabs.executeScript(tabID, {
+                code: syncStorage[tab.url].code,
+                runAt: syncStorage[tab.url].runAt
+            });
+        }
     }
 });
 /*

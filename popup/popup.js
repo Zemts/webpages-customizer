@@ -1,9 +1,20 @@
-//1. подумать - можно ли избавиться от резкого -margin (выглядит не плавно)
-// * возможно нужно более плавное изменение (что-то типо список наезжает на селект -> список плавно уходит в фон (меняя z-index))
-//2. добавить описание настройкам (выбору темы, этапу выполнения)
-//3. сделать блок URL двустрочным, где в первой строке - текущий рабочий URL, а во второй - подходящие url'ны
-
+var Config = function(conf){
+    if(!conf){
+        conf = {};
+    }
+    this.code = conf.code || DEFAULT_CONFIG.code;
+    this.editorTheme = conf.editorTheme || DEFAULT_CONFIG.editorTheme;
+    this.fontSize = conf.fontSize || DEFAULT_CONFIG.fontSize;
+    this.runAt = conf.runAt || DEFAULT_CONFIG.runAt;
+};
+var DEFAULT_CONFIG = {
+    'code' : '',
+    'editorTheme': 'mdn-like',
+    'fontSize': '12px',
+    'runAt': 'document_idle'
+};
 var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
+var URL_STUB = document.createElement('a');
 
 var externalTheme = document.getElementById('js_theme-css');
 var decreaseFont = document.getElementById('js_decrease');
@@ -14,16 +25,16 @@ var editorTheme = document.getElementById('js_theme');
 var urlField = document.getElementById('js_url-path');
 var userCode = document.getElementById("js_user-code");
 
-var codeMirror;
-var config = { // + default values
-    'code': '',
-    'editorTheme': 'mdn-like',
-    'fontSize': '12px',
-    'runAt': 'document_idle'
-};
+var codeMirror = CodeMirror(userCode, {
+    lineNumbers: true,
+    mode: 'javascript',
+    scrollbarStyle: 'simple',
+    value: ''
+});
+var config = {};
+var url_throttle = null;
 
-
-CodeMirror.commands.save = function(){
+CodeMirror.commands.save = function(){ // "ctrl + s" behaviour
     saveButton.click();
 };
 
@@ -35,26 +46,16 @@ chrome.tabs.query(
     function(tab){
         // get/use url
         tab = tab[0];
-        urlField.value = tab.url;
+        URL_STUB.href = tab.url;
+        urlField.value = URL_STUB.origin;
         // set size of popup
         var sizes = getPopupSize(tab.height, tab.width);
         document.body.style.height = sizes.height + 'px';
         document.body.style.width = sizes.width + 'px';
         // check/insert current user script
         chrome.storage.sync.get(null, function(data){
-            initializeConfig(config, data[tab.url]);
-            codeMirror = CodeMirror(userCode, {
-                lineNumbers: true,
-                mode: 'javascript',
-                scrollbarStyle: 'simple',
-                theme: config.editorTheme,
-                value: config.code
-            });
-            codeMirror.setSize('100%', '100%');
-            // set settings
-            userCode.style.fontSize = config.fontSize;
-            setRadioInFormByValue(editorTheme, config.editorTheme);
-            setRadioInFormByValue(runAt, config.runAt);
+            applyUserData(data[URL_STUB.origin]);
+            console.log(config);
         });
     }
 );
@@ -91,8 +92,30 @@ saveButton.addEventListener('click', function(ev){
         [urlField.value]: config // save config state
     });
 });
+urlField.addEventListener('input', function(ev){
+    if(url_throttle !== null){
+        clearTimeout(url_throttle);
+    }
+    url_throttle = setTimeout(function(){
+        chrome.storage.sync.get(null, function(data){
+            applyUserData(data[ev.target.value]);
+        });
+    }, 500);
+});
 
-
+function applyUserData(data){
+    // update config
+    config = new Config(data);
+    // set html
+    userCode.style.fontSize = config.fontSize;
+    setRadioInFormByValue(editorTheme, config.editorTheme);
+    setRadioInFormByValue(runAt, config.runAt);
+    // set code mirror options
+    codeMirror.setOption('value', config.code);
+    codeMirror.setOption('theme', config.editorTheme);
+    codeMirror.setSize('100%', '100%');
+    codeMirror.refresh();
+}
 function getPopupSize(height, width){
     var MAX_H = 600;
     var MAX_W = 800;
@@ -113,15 +136,6 @@ function getValueFromForm(form){
     })[0];
     return checked && checked.value;
 }
-function initializeConfig(state, params){
-    if(!params){
-        params = {};
-    }
-    state.code = params.code || state.code;
-    state.fontSize = params.fontSize || state.fontSize;
-    state.editorTheme = params.editorTheme || state.editorTheme;
-    state.runAt = params.runAt || state.runAt;
-}
 function setRadioInFormByValue(form, value){
     Array.prototype.forEach.call(form.getElementsByTagName('input'), function(item){
         if(item.value === value){
@@ -133,7 +147,10 @@ function setRadioInFormByValue(form, value){
 
 /*chrome.storage.sync.get(null, function(data){
     var keys = Object.keys(data);
+    console.log(keys);
     chrome.storage.sync.getBytesInUse(keys, function(bytes){
-        list.innerHTML = bytes;
+        console.log(bytes);
     });
 });*/
+
+/*chrome.storage.sync.clear();*/

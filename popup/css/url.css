@@ -1,13 +1,5 @@
-.url-path {
-    display: inline-flex;
-    flex-direction: row;
-    justify-content: start;
-    margin-right: 10px;
-    width: 100%;
-}
 .url-path_input {
     border: none;
-    border-bottom: 1px solid transparent;
     font-size: 16px;
     outline: none;
     width: 100%;
