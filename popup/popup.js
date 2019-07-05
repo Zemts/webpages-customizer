@@ -1,3 +1,8 @@
+// 'https://unpkg.com/react@16/umd/react.production.min.js'
+// 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js'
+// 'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js'
+
+
 var Config = function(conf){
     if(!conf){
         conf = {};
@@ -6,12 +11,14 @@ var Config = function(conf){
     this.editorTheme = conf.editorTheme || DEFAULT_CONFIG.editorTheme;
     this.fontSize = conf.fontSize || DEFAULT_CONFIG.fontSize;
     this.runAt = conf.runAt || DEFAULT_CONFIG.runAt;
+    this.withReact = conf.withReact || DEFAULT_CONFIG.withReact;
 };
 var DEFAULT_CONFIG = {
     'code' : '',
     'editorTheme': 'mdn-like',
     'fontSize': '12px',
-    'runAt': 'document_idle'
+    'runAt': 'document_idle',
+    'withReact' : false
 };
 var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
 var URL_STUB = document.createElement('a');
@@ -24,6 +31,8 @@ var saveButton = document.getElementById('js_save');
 var editorTheme = document.getElementById('js_theme');
 var urlField = document.getElementById('js_url-path');
 var userCode = document.getElementById("js_user-code");
+var withReact = document.getElementById("js_use-react");
+
 
 var codeMirror = CodeMirror(userCode, {
     lineNumbers: true,
@@ -87,7 +96,18 @@ runAt.addEventListener('change', function(ev){
     }
 });
 saveButton.addEventListener('click', function(ev){
-    config.code = codeMirror.getValue();
+    var code = codeMirror.getValue();
+
+    //var transformed = Babel.transform(code, { presets: ['react'] });
+    //var transpiled = Babel.transformFromAst(
+    //    transformed.ast,
+    //    transformed.code,
+    //    { presets: ['es2015' ] }
+    //);
+
+    //config.code = transpiled.code;
+    config.code = code;
+
     chrome.storage.sync.set({
         [urlField.value]: config // save config state
     });
@@ -102,6 +122,9 @@ urlField.addEventListener('input', function(ev){
         });
     }, 500);
 });
+withReact.addEventListener('change', function(ev){
+    config.withReact = ev.target.checked;
+});
 
 function applyUserData(data){
     // update config
@@ -110,6 +133,7 @@ function applyUserData(data){
     userCode.style.fontSize = config.fontSize;
     setRadioInFormByValue(editorTheme, config.editorTheme);
     setRadioInFormByValue(runAt, config.runAt);
+    withReact.checked = config.withReact;
     // set code mirror options
     codeMirror.setOption('value', config.code);
     codeMirror.setOption('theme', config.editorTheme);
