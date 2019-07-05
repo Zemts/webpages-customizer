@@ -5,3 +5,6 @@
     position: relative;
     width: 100%;
 }
+.user-code * {
+    font-family: var(--editor-font-family) !important;
+}

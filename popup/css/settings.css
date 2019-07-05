@@ -12,12 +12,15 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--arrow-font-size);
     font-weight: 800;
     height: 10px; /* scaleable */
     line-height: 10px;
+    padding-left: 5px;
+    position: relative;
     outline: none;
-    transform: scaleX(2) rotate(90deg) translateX(23%);
+    top: 2px;
+    transform: scaleX(2) rotate(90deg);
     width: 22px;
 }
 .font-text {
@@ -87,14 +90,14 @@
 }
 .list_expand-label {
     cursor: pointer;
-    font-size: 14px;
+    font-size: var(--arrow-font-size);
     font-weight: 800;
     height: 10px; /* scaleable */
     line-height: 10px;
     padding-left: 5px;
     position: absolute;
     right: 12px; /* right parent padding + 2px self */
-    top: 5px;
+    top: 7px;
     transform: scaleX(2) rotateZ(90deg);
     user-select: none;
     width: 18px;

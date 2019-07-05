@@ -1,9 +1,15 @@
 /*
 *   COMMON
 */
+:root {
+    --arrows-font-size: 14px;
+    --main-font-family: 'Times New Roman';
+    --editor-font-family: monospace;
+}
+
 * {
     box-sizing: border-box;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: inherit;
     margin: 0;
     padding: 0;
 }
@@ -27,6 +33,7 @@ body { /* body height and width are set by JS */
     border: 2px solid black;
     /*border-radius: 5px;*/
     display: flex;
+    font-family: var(--main-font-family);
     justify-content: flex-start;
     max-width: 100%;
     min-width: 100%;
