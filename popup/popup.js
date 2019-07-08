@@ -59,7 +59,7 @@ chrome.tabs.query(
         // get/use url
         tab = tab[0];
         URL_STUB.href = tab.url;
-        urlField.value = URL_STUB.origin;
+        urlField.innerHTML = URL_STUB.origin;
         // set size of popup
         var sizes = getPopupSize(tab.height, tab.width);
         document.body.style.height = sizes.height + 'px';
@@ -116,18 +116,8 @@ saveButton.addEventListener('click', function(ev){
 
     // console.log(config);
     chrome.storage.sync.set({
-        [urlField.value]: config // save config state
+        [urlField.innerHTML]: config // save config state
     });
-});
-urlField.addEventListener('input', function(ev){
-    if(url_throttle !== null){
-        clearTimeout(url_throttle);
-    }
-    url_throttle = setTimeout(function(){
-        chrome.storage.sync.get(null, function(data){
-            applyUserData(data[ev.target.value]);
-        });
-    }, 500);
 });
 withReact.addEventListener('change', function(ev){
     config.withReact = ev.target.checked;
