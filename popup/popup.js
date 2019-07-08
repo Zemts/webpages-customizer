@@ -2,7 +2,6 @@
 // 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js'
 // 'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js'
 
-
 var Config = function(conf){
     if(!conf){
         conf = {};
@@ -11,6 +10,7 @@ var Config = function(conf){
     this.editorTheme = conf.editorTheme || DEFAULT_CONFIG.editorTheme;
     this.fontSize = conf.fontSize || DEFAULT_CONFIG.fontSize;
     this.runAt = conf.runAt || DEFAULT_CONFIG.runAt;
+    this.transpiled = conf.transpiled || DEFAULT_CONFIG.transpiled;
     this.withReact = conf.withReact || DEFAULT_CONFIG.withReact;
 };
 var DEFAULT_CONFIG = {
@@ -18,8 +18,11 @@ var DEFAULT_CONFIG = {
     'editorTheme': 'mdn-like',
     'fontSize': '12px',
     'runAt': 'document_idle',
+    'transpiled': '',
     'withReact' : false
 };
+var BABEL_ES2015_PRESETS = { presets: ['es2015'] };
+var BABEL_REACT_PRESETS = { presets: ['react'] };
 var THEME_PATTERN = /[a-z0-9\-]+(?=\.min\.css$)/;
 var URL_STUB = document.createElement('a');
 
@@ -64,7 +67,7 @@ chrome.tabs.query(
         // check/insert current user script
         chrome.storage.sync.get(null, function(data){
             applyUserData(data[URL_STUB.origin]);
-            console.log(config);
+            //console.log(config);
         });
     }
 );
@@ -97,17 +100,21 @@ runAt.addEventListener('change', function(ev){
 });
 saveButton.addEventListener('click', function(ev){
     var code = codeMirror.getValue();
+    var transformed = '';
+    var transpiled = '';
+    if(config.withReact){
+        transformed = Babel.transform(code, BABEL_REACT_PRESETS);
+        transpiled = Babel.transformFromAst(
+            transformed.ast,
+            transformed.code,
+            BABEL_ES2015_PRESETS
+        ).code;
+    }
 
-    //var transformed = Babel.transform(code, { presets: ['react'] });
-    //var transpiled = Babel.transformFromAst(
-    //    transformed.ast,
-    //    transformed.code,
-    //    { presets: ['es2015' ] }
-    //);
-
-    //config.code = transpiled.code;
     config.code = code;
+    config.transpiled = transpiled;
 
+    // console.log(config);
     chrome.storage.sync.set({
         [urlField.value]: config // save config state
     });

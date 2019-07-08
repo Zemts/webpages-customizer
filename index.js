@@ -57,15 +57,19 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab){
     if(changeInfo.status === 'loading'){ // doesn't use URL with another lifecycle stages of tabs
         URL_STUB.href = tab.url;
         if(syncStorage[URL_STUB.origin]){
+            if(syncStorage[URL_STUB.origin].withReact){
+                chrome.tabs.executeScript(tabID, {
+                    file: './3rd party/react.production.min.js',
+                    runAt: 'document_start'
+                });
+                chrome.tabs.executeScript(tabID, {
+                    file: './3rd party/react-dom.production.min.js',
+                    runAt: 'document_start'
+                });
+            }
             chrome.tabs.executeScript(tabID, {
-                code: syncStorage[URL_STUB.origin].code,
+                code: syncStorage[URL_STUB.origin].transpiled || syncStorage[URL_STUB.origin].code,
                 runAt: syncStorage[URL_STUB.origin].runAt
-            });
-        }
-        if(syncStorage[tab.url]){
-            chrome.tabs.executeScript(tabID, {
-                code: syncStorage[tab.url].code,
-                runAt: syncStorage[tab.url].runAt
             });
         }
     }
