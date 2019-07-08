@@ -2,6 +2,8 @@
 // 'https://unpkg.com/react-dom@16/umd/react-dom.production.min.js'
 // 'https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js'
 
+// checkbox: https://codepen.io/andreasstorm/pen/deRvMy
+
 var Config = function(conf){
     if(!conf){
         conf = {};
@@ -100,16 +102,14 @@ runAt.addEventListener('change', function(ev){
 });
 saveButton.addEventListener('click', function(ev){
     var code = codeMirror.getValue();
-    var transformed = '';
-    var transpiled = '';
-    if(config.withReact){
-        transformed = Babel.transform(code, BABEL_REACT_PRESETS);
-        transpiled = Babel.transformFromAst(
-            transformed.ast,
-            transformed.code,
-            BABEL_ES2015_PRESETS
-        ).code;
-    }
+    var transformed = config.withReact
+        ? Babel.transform(code, BABEL_REACT_PRESETS)
+        : Babel.transform(code, BABEL_ES2015_PRESETS);
+    var transpiled = Babel.transformFromAst(
+        transformed.ast,
+        transformed.code,
+        BABEL_ES2015_PRESETS
+    ).code;
 
     config.code = code;
     config.transpiled = transpiled;

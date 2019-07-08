@@ -68,7 +68,7 @@ chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab){
                 });
             }
             chrome.tabs.executeScript(tabID, {
-                code: syncStorage[URL_STUB.origin].transpiled || syncStorage[URL_STUB.origin].code,
+                code: syncStorage[URL_STUB.origin].transpiled,
                 runAt: syncStorage[URL_STUB.origin].runAt
             });
         }
