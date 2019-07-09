@@ -102,17 +102,26 @@ runAt.addEventListener('change', function(ev){
 });
 saveButton.addEventListener('click', function(ev){
     var code = codeMirror.getValue();
-    var transformed = config.withReact
-        ? Babel.transform(code, BABEL_REACT_PRESETS)
-        : Babel.transform(code, BABEL_ES2015_PRESETS);
-    var transpiled = Babel.transformFromAst(
-        transformed.ast,
-        transformed.code,
-        BABEL_ES2015_PRESETS
-    ).code;
+    try {
+        var transformed = config.withReact
+            ? Babel.transform(code, BABEL_REACT_PRESETS)
+            : Babel.transform(code, BABEL_ES2015_PRESETS);
+        var transpiled = Babel.transformFromAst(
+            transformed.ast,
+            transformed.code,
+            BABEL_ES2015_PRESETS
+        ).code;
 
-    config.code = code;
-    config.transpiled = transpiled;
+        config.code = code;
+        config.transpiled = transpiled;
+    }
+    catch(e){
+        alert("Problem with code syntax (see console)");
+        console.log(e);
+
+        config.code = code;
+        config.transpiled = code;
+    }
 
     // console.log(config);
     chrome.storage.sync.set({
