@@ -71,6 +71,11 @@ body { /* body height and width are set by JS */
     padding-top: 10px;
     z-index: 10;
 }
+.set--settings > .set_bugfix > * {
+    
+    box-shadow: -2px 2px 3px 2px rgb(200, 200, 200, 0.3);
+    margin-right: 10px;
+}
 .set--main {
     align-self: stretch;
     max-height: calc(100% - 110px); /* 110px is approximate sum of header and footer */

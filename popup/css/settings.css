@@ -1,11 +1,10 @@
 .simple-option {
     align-items: center;
-    border-left: 1px solid rgba(0, 0, 0, 0.3);
-    border-right: 1px solid rgba(0, 0, 0, 0.3);
     display: inline-flex;
     flex-direction: row;
     flex-wrap: nowrap;
     height: 22px;
+    justify-content: flex-start;
     padding: 0 5px;
     position: relative;
 }
@@ -22,8 +21,10 @@
     outline: none;
     top: -2px;
     transform: scaleX(2) rotate(90deg);
+    user-select: none;
     width: 22px;
 }
+
 .simple-option_label {
     color: black;
     cursor: default;
@@ -38,6 +39,31 @@
     user-select: none;
     width: auto;
 }
+.simple-option_label--checkbox {
+    border: 1px solid black;
+    display: block;
+    height: 16px;
+    margin-left: 10px;
+    margin-right: 5px;
+    position: relative;
+    top: 0;
+    width: 16px;
+}
+.simple-option_label--checkbox::after {
+    background-color: transparent;
+    content: '';
+    display: block;
+    height: calc(100% - 4px);
+    left: 2px;
+    position: absolute;
+    top: 2px;
+    transition: background-color 0.5s ease;
+    width: calc(100% - 4px);
+}
+.simple-option_checkbox-input:checked ~ .simple-option_label--checkbox::after {
+    background-color: black;
+    
+}
 .font-button:focus {
     border-right: 1px solid black;
 }
@@ -51,7 +77,6 @@
 }
 
 .list {
-    border-right: 1px solid rgba(0, 0, 0, 0.3);
     color: black;
     cursor: pointer;
     display: inline-block;
@@ -67,7 +92,7 @@
 .list_clicker {
     background: transparent;
     cursor: pointer;
-    height: 20px;
+    height: 22px;
     left: 0;
     position: absolute;
     top: 0;
@@ -96,13 +121,13 @@
     font-weight: 800;
     height: 10px; /* scaleable */
     line-height: 10px;
-    padding-left: 5px;
+    padding-left: 10px;
     position: absolute;
-    right: 12px; /* right parent padding + 2px self */
-    top: 7px;
+    right: 5px; /* right parent padding + 2px self */
+    top: 3px;
     transform: scaleX(2) rotateZ(90deg);
     user-select: none;
-    width: 18px;
+    width: 22px;
     z-index: 1;
 }
 .list_items {
@@ -167,5 +192,5 @@
 .list_input:checked + .list_label {
     height: 20px;
     line-height: 21px;
-    margin-top: -20px;
+    margin-top: -21px;
 }

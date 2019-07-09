@@ -272,11 +272,16 @@
                             <label class='list_label' title='document_idle' for='run-at_idle'>idle</label>
                         </li>
                     </ul>
-
                 </form>
                 <div class='simple-option'>
-                    <input type='checkbox' id='js_use-react'>
-                    <label class='simple-option_label' for='js_use-react'>With React: </label>
+                    <input
+                        type='checkbox'
+                        class='simple-option_checkbox-input'
+                        id='js_use-react'
+                        hidden
+                    >
+                    <label class='simple-option_label' for='js_use-react'>with React: </label>
+                    <label class='simple-option_label simple-option_label--checkbox' for='js_use-react'></label>
                 </div>
             </div>
         </fieldset>
